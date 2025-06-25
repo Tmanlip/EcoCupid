@@ -290,6 +290,271 @@
             backdrop-filter: blur(5px);
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: white;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 2rem;
+            position: relative;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-category {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content {
+            padding: 2rem;
+        }
+
+        .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .detail-section h3 {
+            color: #1f2937;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-section p, .detail-section ul {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .detail-section ul {
+            padding-left: 1.5rem;
+        }
+
+        .detail-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #10b981, #059669);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-out;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .team-member {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .team-member img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member h4 {
+            color: #1f2937;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .team-member p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: #e5f3f0;
+            color: #059669;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0.5rem;
+            bottom: 0.5rem;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.6rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .timeline-date {
+            font-weight: 600;
+            color: #10b981;
+            font-size: 0.9rem;
+        }
+
+        .timeline-content {
+            margin-top: 0.25rem;
+        }
+
+        .modal-actions {
+            padding: 0 2rem 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .modal-btn-secondary {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
         /* Mobile First Responsive Design */
         @media (max-width: 480px) {
             .hero {
@@ -380,6 +645,36 @@
                 padding: 1rem;
                 font-size: 0.9rem;
             }
+
+            .modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            .modal-header {
+                padding: 1.5rem;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-actions {
+                padding: 0 1.5rem 1.5rem;
+                flex-direction: column;
+            }
+
+            .timeline {
+                padding-left: 1.5rem;
+            }
         }
         
         /* Tablet Portrait */
@@ -422,6 +717,10 @@
                 grid-template-columns: 1fr 1fr 1fr;
                 gap: 1rem;
                 text-align: center;
+            }
+
+            .modal {
+                width: 85%;
             }
         }
         
@@ -502,6 +801,10 @@
             .filters {
                 margin: -3rem auto 2rem;
             }
+
+            .modal {
+                max-height: 85vh;
+            }
         }
     </style>
 </head>
@@ -526,7 +829,7 @@
         </div>
 
         <div class="projects-grid" id="projectsGrid">
-            <div class="project-card" data-category="renewable">
+            <div class="project-card" data-category="renewable" data-project="solar">
                 <div class="project-image">
                     <div class="impact-badge">High Impact</div>
                 </div>
@@ -534,93 +837,6 @@
                     <span class="project-category">Renewable Energy</span>
                     <h3 class="project-title">Solar Panel Installation Initiative</h3>
                     <p class="project-description">Help install solar panels in underserved communities to reduce energy costs and carbon footprint. We're looking for volunteers with technical skills and passion for clean energy.</p>
-                    <div class="project-stats">
-                        <div class="stat">
-                            <div class="stat-number">15</div>
-                            <div class="stat-label">Volunteers</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">85%</div>
-                            <div class="stat-label">Complete</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">200</div>
-                            <div class="stat-label">CO2 Saved</div>
-                        </div>
-                    </div>
-                    <div class="project-actions">
-                        <button class="btn btn-primary">Join Project</button>
-                        <button class="btn btn-secondary">Learn More</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card" data-category="conservation">
-                <div class="project-image">
-                    <div class="impact-badge">Medium Impact</div>
-                </div>
-                <div class="project-content">
-                    <span class="project-category">Conservation</span>
-                    <h3 class="project-title">Coastal Cleanup & Marine Protection</h3>
-                    <p class="project-description">Join our monthly beach cleanups and help protect marine ecosystems. Perfect for families and groups looking to make a direct environmental impact.</p>
-                    <div class="project-stats">
-                        <div class="stat">
-                            <div class="stat-number">42</div>
-                            <div class="stat-label">Volunteers</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">60%</div>
-                            <div class="stat-label">Complete</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">1.2T</div>
-                            <div class="stat-label">Waste Removed</div>
-                        </div>
-                    </div>
-                    <div class="project-actions">
-                        <button class="btn btn-primary">Join Project</button>
-                        <button class="btn btn-secondary">Learn More</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card" data-category="urban">
-                <div class="project-image">
-                    <div class="impact-badge">High Impact</div>
-                </div>
-                <div class="project-content">
-                    <span class="project-category">Urban Green</span>
-                    <h3 class="project-title">Community Garden Network</h3>
-                    <p class="project-description">Transform vacant lots into thriving community gardens. We provide seeds, tools, and expertise - you bring the enthusiasm and green thumbs!</p>
-                    <div class="project-stats">
-                        <div class="stat">
-                            <div class="stat-number">28</div>
-                            <div class="stat-label">Volunteers</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">40%</div>
-                            <div class="stat-label">Complete</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">5</div>
-                            <div class="stat-label">Gardens</div>
-                        </div>
-                    </div>
-                    <div class="project-actions">
-                        <button class="btn btn-primary">Join Project</button>
-                        <button class="btn btn-secondary">Learn More</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card" data-category="education">
-                <div class="project-image">
-                    <div class="impact-badge">Medium Impact</div>
-                </div>
-                <div class="project-content">
-                    <span class="project-category">Education</span>
-                    <h3 class="project-title">Green Schools Program</h3>
-                    <p class="project-description">Teach children about sustainability through hands-on environmental education. Help develop curriculum and lead workshops in local schools.</p>
                     <div class="project-stats">
                         <div class="stat">
                             <div class="stat-number">12</div>
@@ -637,12 +853,12 @@
                     </div>
                     <div class="project-actions">
                         <button class="btn btn-primary">Join Project</button>
-                        <button class="btn btn-secondary">Learn More</button>
+                        <button class="btn btn-secondary" data-project="schools">Learn More</button>
                     </div>
                 </div>
             </div>
 
-            <div class="project-card" data-category="technology">
+            <div class="project-card" data-category="technology" data-project="water">
                 <div class="project-image">
                     <div class="impact-badge">High Impact</div>
                 </div>
@@ -666,12 +882,12 @@
                     </div>
                     <div class="project-actions">
                         <button class="btn btn-primary">Join Project</button>
-                        <button class="btn btn-secondary">Learn More</button>
+                        <button class="btn btn-secondary" data-project="water">Learn More</button>
                     </div>
                 </div>
             </div>
 
-            <div class="project-card" data-category="renewable">
+            <div class="project-card" data-category="renewable" data-project="wind">
                 <div class="project-image">
                     <div class="impact-badge">Medium Impact</div>
                 </div>
@@ -695,14 +911,240 @@
                     </div>
                     <div class="project-actions">
                         <button class="btn btn-primary">Join Project</button>
-                        <button class="btn btn-secondary">Learn More</button>
+                        <button class="btn btn-secondary" data-project="wind">Learn More</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <button class="modal-close" id="modalClose">×</button>
+                <div class="modal-category" id="modalCategory">Renewable Energy</div>
+                <h2 class="modal-title" id="modalTitle">Project Title</h2>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary">Join This Project</button>
+                <button class="modal-btn modal-btn-secondary" id="modalCloseBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Project data for the modal
+        const projectData = {
+            solar: {
+                title: "Solar Panel Installation Initiative",
+                category: "Renewable Energy",
+                description: "Help install solar panels in underserved communities to reduce energy costs and carbon footprint.",
+                fullDescription: "Our Solar Panel Installation Initiative is a comprehensive program designed to bring clean, renewable energy to underserved communities while providing valuable hands-on experience to volunteers. This project combines environmental impact with social justice, ensuring that the benefits of green technology reach those who need it most.",
+                goals: [
+                    "Install 50 solar panel systems in low-income households by December 2025",
+                    "Reduce average electricity bills by 60-80% for participating families",
+                    "Train 100+ volunteers in solar installation techniques",
+                    "Create a sustainable model for community-led renewable energy projects"
+                ],
+                requirements: [
+                    "Basic electrical knowledge (training provided)",
+                    "Physical ability to work on rooftops",
+                    "Commitment to attend safety training sessions",
+                    "Weekend availability for installation days"
+                ],
+                skills: ["Electrical Work", "Construction", "Project Management", "Community Outreach"],
+                progress: 85,
+                team: [
+                    { name: "Sarah Chen", role: "Project Lead", avatar: "" },
+                    { name: "Mike Rodriguez", role: "Technical Director", avatar: "" },
+                    { name: "Emma Thompson", role: "Community Liaison", avatar: "" }
+                ],
+                timeline: [
+                    { date: "Jan 2025", event: "Project Launch & Volunteer Recruitment", completed: true },
+                    { date: "Feb 2025", event: "Safety Training & Certification Program", completed: true },
+                    { date: "Mar 2025", event: "First 10 Installations Completed", completed: true },
+                    { date: "Apr 2025", event: "Mid-project Review & Optimization", completed: true },
+                    { date: "Jun 2025", event: "25 Installations Milestone", completed: false },
+                    { date: "Dec 2025", event: "Project Completion & Impact Assessment", completed: false }
+                ],
+                impact: "So far, we've successfully reduced CO2 emissions by 200 tons annually and helped 25 families save over $2,000 per year on electricity bills."
+            },
+            coastal: {
+                title: "Coastal Cleanup & Marine Protection",
+                category: "Conservation",
+                description: "Join our monthly beach cleanups and help protect marine ecosystems.",
+                fullDescription: "Our Coastal Cleanup & Marine Protection initiative is a year-round program focused on preserving marine ecosystems through direct action, education, and policy advocacy. We organize monthly beach cleanups, conduct marine life monitoring, and work with local authorities to implement better waste management policies.",
+                goals: [
+                    "Clean 50 miles of coastline throughout 2025",
+                    "Remove 5 tons of marine debris and plastic waste",
+                    "Educate 1,000+ community members about marine conservation",
+                    "Establish 3 new marine protected zones"
+                ],
+                requirements: [
+                    "Physical ability to walk on sand and rocky terrain",
+                    "Willingness to work in various weather conditions",
+                    "Commitment to monthly cleanup sessions",
+                    "Interest in marine conservation"
+                ],
+                skills: ["Environmental Science", "Data Collection", "Public Speaking", "Photography"],
+                progress: 60,
+                team: [
+                    { name: "Dr. James Martinez", role: "Marine Biologist", avatar: "" },
+                    { name: "Lisa Park", role: "Conservation Coordinator", avatar: "" },
+                    { name: "Tom Anderson", role: "Volunteer Manager", avatar: "" }
+                ],
+                timeline: [
+                    { date: "Jan 2025", event: "Program Launch & Baseline Assessment", completed: true },
+                    { date: "Feb 2025", event: "First Monthly Cleanup Event", completed: true },
+                    { date: "Mar 2025", event: "Marine Life Monitoring Training", completed: true },
+                    { date: "Jun 2025", event: "Mid-year Impact Report", completed: false },
+                    { date: "Sep 2025", event: "Policy Advocacy Campaign Launch", completed: false },
+                    { date: "Dec 2025", event: "Annual Conservation Summit", completed: false }
+                ],
+                impact: "We've removed 1.2 tons of waste from our coastlines, documented 15 marine species recovery signs, and engaged over 400 community volunteers in hands-on conservation."
+            },
+            garden: {
+                title: "Community Garden Network",
+                category: "Urban Green",
+                description: "Transform vacant lots into thriving community gardens.",
+                fullDescription: "The Community Garden Network is an ambitious urban agriculture project that transforms underutilized city spaces into productive, beautiful community gardens. We provide everything needed to get started: seeds, tools, soil amendments, and expert guidance from master gardeners.",
+                goals: [
+                    "Establish 10 new community gardens across the city",
+                    "Provide fresh produce to 500+ families",
+                    "Create educational programs for urban farming",
+                    "Build a network of connected garden communities"
+                ],
+                requirements: [
+                    "Interest in gardening and urban agriculture",
+                    "Ability to commit 4-6 hours per week",
+                    "Willingness to learn new gardening techniques",
+                    "Good communication skills for community engagement"
+                ],
+                skills: ["Gardening", "Community Building", "Education", "Landscaping"],
+                progress: 40,
+                team: [
+                    { name: "Maria Gonzalez", role: "Master Gardener", avatar: "" },
+                    { name: "David Kim", role: "Urban Planning Specialist", avatar: "" },
+                    { name: "Rachel Green", role: "Community Organizer", avatar: "" }
+                ],
+                timeline: [
+                    { date: "Jan 2025", event: "Site Selection & Community Outreach", completed: true },
+                    { date: "Mar 2025", event: "First 2 Gardens Established", completed: true },
+                    { date: "May 2025", event: "Spring Planting Season", completed: false },
+                    { date: "Jul 2025", event: "Mid-season Harvest Festival", completed: false },
+                    { date: "Oct 2025", event: "Fall Harvest & Seed Saving", completed: false },
+                    { date: "Dec 2025", event: "Year-end Community Celebration", completed: false }
+                ],
+                impact: "Our 5 established gardens have produced over 2,000 pounds of fresh vegetables, created 15 new jobs, and brought together diverse communities around healthy food access."
+            },
+            schools: {
+                title: "Green Schools Program",
+                category: "Education",
+                description: "Teach children about sustainability through hands-on environmental education.",
+                fullDescription: "The Green Schools Program brings comprehensive environmental education directly into classrooms and school communities. We develop age-appropriate curricula, train teachers, and create engaging hands-on activities that inspire the next generation of environmental stewards.",
+                goals: [
+                    "Implement programs in 25 schools district-wide",
+                    "Train 100+ teachers in environmental education",
+                    "Reach 2,000+ students with hands-on activities",
+                    "Establish school gardens and recycling programs"
+                ],
+                requirements: [
+                    "Background in education or environmental science",
+                    "Experience working with children",
+                    "Strong presentation and communication skills",
+                    "Ability to pass background checks for school access"
+                ],
+                skills: ["Teaching", "Curriculum Development", "Child Psychology", "Environmental Science"],
+                progress: 75,
+                team: [
+                    { name: "Prof. Angela Davis", role: "Education Director", avatar: "" },
+                    { name: "Carlos Lopez", role: "Curriculum Specialist", avatar: "" },
+                    { name: "Nina Patel", role: "Teacher Training Coordinator", avatar: "" }
+                ],
+                timeline: [
+                    { date: "Sep 2024", event: "Pilot Program Launch", completed: true },
+                    { date: "Jan 2025", event: "Curriculum Refinement", completed: true },
+                    { date: "Mar 2025", event: "Teacher Training Workshops", completed: true },
+                    { date: "May 2025", event: "School Garden Installations", completed: false },
+                    { date: "Sep 2025", event: "Full District Rollout", completed: false },
+                    { date: "Dec 2025", event: "Program Evaluation & Expansion", completed: false }
+                ],
+                impact: "We've directly educated 500 students, trained 30 teachers, and helped establish environmental clubs in 8 schools, creating lasting change in environmental awareness."
+            },
+            water: {
+                title: "Smart Water Management System",
+                category: "Clean Tech",
+                description: "Develop IoT solutions for water conservation in urban areas.",
+                fullDescription: "Our Smart Water Management System project develops cutting-edge IoT solutions to optimize water usage in urban environments. We're creating sensor networks, data analytics platforms, and automated control systems to reduce water waste and improve efficiency across the city.",
+                goals: [
+                    "Deploy smart sensors in 100+ locations",
+                    "Develop predictive analytics for water usage",
+                    "Create automated leak detection systems",
+                    "Reduce citywide water waste by 30%"
+                ],
+                requirements: [
+                    "Programming experience (Python, JavaScript, or C++)",
+                    "Interest in IoT and sensor technology",
+                    "Basic understanding of data analytics",
+                    "Problem-solving and teamwork skills"
+                ],
+                skills: ["Software Development", "IoT", "Data Science", "Hardware Engineering"],
+                progress: 25,
+                team: [
+                    { name: "Dr. Alex Chen", role: "Lead Engineer", avatar: "" },
+                    { name: "Priya Sharma", role: "Data Scientist", avatar: "" },
+                    { name: "Ben Walsh", role: "IoT Specialist", avatar: "" }
+                ],
+                timeline: [
+                    { date: "Jan 2025", event: "System Architecture Design", completed: true },
+                    { date: "Mar 2025", event: "Prototype Development", completed: false },
+                    { date: "Jun 2025", event: "Beta Testing Phase", completed: false },
+                    { date: "Sep 2025", event: "Pilot Deployment", completed: false },
+                    { date: "Nov 2025", event: "Full System Launch", completed: false },
+                    { date: "Dec 2025", event: "Impact Assessment", completed: false }
+                ],
+                impact: "In our preliminary tests, we've identified potential water savings of 30% in monitored buildings and developed algorithms that can predict usage patterns with 85% accuracy."
+            },
+            wind: {
+                title: "Wind Energy Advocacy Campaign",
+                category: "Renewable Energy",
+                description: "Promote wind energy adoption through community outreach and policy advocacy.",
+                fullDescription: "Our Wind Energy Advocacy Campaign works to accelerate the adoption of wind energy through strategic community outreach, policy advocacy, and public education. We engage with local governments, businesses, and citizens to build support for wind energy projects and policies.",
+                goals: [
+                    "Pass 3 pro-wind energy policies at the local level",
+                    "Educate 5,000+ community members about wind energy",
+                    "Organize 20+ community information sessions",
+                    "Build coalition of 50+ local businesses supporting wind energy"
+                ],
+                requirements: [
+                    "Strong communication and public speaking skills",
+                    "Interest in renewable energy policy",
+                    "Ability to work with diverse community groups",
+                    "Experience with advocacy or political organizing preferred"
+                ],
+                skills: ["Public Speaking", "Policy Analysis", "Community Organizing", "Marketing"],
+                progress: 55,
+                team: [
+                    { name: "Jennifer Liu", role: "Campaign Director", avatar: "" },
+                    { name: "Marcus Johnson", role: "Policy Analyst", avatar: "" },
+                    { name: "Sophie Miller", role: "Community Outreach Manager", avatar: "" }
+                ],
+                timeline: [
+                    { date: "Nov 2024", event: "Campaign Strategy Development", completed: true },
+                    { date: "Jan 2025", event: "Stakeholder Mapping & Outreach", completed: true },
+                    { date: "Mar 2025", event: "First Policy Proposal Submitted", completed: true },
+                    { date: "Jun 2025", event: "Community Information Campaign", completed: false },
+                    { date: "Sep 2025", event: "Policy Vote & Results", completed: false },
+                    { date: "Dec 2025", event: "Campaign Evaluation & Planning", completed: false }
+                ],
+                impact: "We've successfully advocated for preliminary approval of 3 wind energy policies, engaged over 2,000 community members, and built a coalition of 35 local businesses supporting renewable energy."
+            }
+        };
+
         // Filter functionality
         const filterBtns = document.querySelectorAll('.filter-btn');
         const projectCards = document.querySelectorAll('.project-card');
@@ -724,6 +1166,122 @@
                         card.style.display = 'none';
                     }
                 });
+            });
+        });
+
+        // Modal functionality
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalCategory = document.getElementById('modalCategory');
+        const modalContent = document.getElementById('modalContent');
+
+        function openModal(projectId) {
+            const project = projectData[projectId];
+            if (!project) return;
+
+            modalTitle.textContent = project.title;
+            modalCategory.textContent = project.category;
+            
+            modalContent.innerHTML = `
+                <div class="detail-section">
+                    <h3>🎯 Project Overview</h3>
+                    <p>${project.fullDescription}</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${project.progress}%"></div>
+                    </div>
+                    <p><strong>Progress: ${project.progress}% Complete</strong></p>
+                </div>
+
+                <div class="detail-section">
+                    <h3>🏆 Project Goals</h3>
+                    <ul>
+                        ${project.goals.map(goal => `<li>${goal}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="detail-section">
+                    <h3>📋 Requirements</h3>
+                    <ul>
+                        ${project.requirements.map(req => `<li>${req}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="detail-section">
+                    <h3>🛠️ Skills Needed</h3>
+                    <div class="skills-tags">
+                        ${project.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>👥 Project Team</h3>
+                    <div class="team-grid">
+                        ${project.team.map(member => `
+                            <div class="team-member">
+                                <div class="team-member-avatar" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); margin: 0 auto 0.5rem;"></div>
+                                <h4>${member.name}</h4>
+                                <p>${member.role}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>📅 Project Timeline</h3>
+                    <div class="timeline">
+                        ${project.timeline.map(item => `
+                            <div class="timeline-item">
+                                <div class="timeline-date">${item.date}</div>
+                                <div class="timeline-content">
+                                    <strong>${item.event}</strong>
+                                    ${item.completed ? ' ✓' : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>🌍 Impact So Far</h3>
+                    <p>${project.impact}</p>
+                </div>
+            `;
+
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Animate progress bar
+            setTimeout(() => {
+                const progressFill = modalContent.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = '0%';
+                    setTimeout(() => {
+                        progressFill.style.width = `${project.progress}%`;
+                    }, 100);
+                }
+            }, 300);
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Event listeners for modal
+        modalClose.addEventListener('click', closeModal);
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // Event listeners for "Learn More" buttons
+        document.querySelectorAll('.btn-secondary').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const projectId = btn.dataset.project;
+                openModal(projectId);
             });
         });
 
@@ -751,14 +1309,13 @@
             });
         });
 
-        document.querySelectorAll('.btn-secondary').forEach(btn => {
+        document.querySelectorAll('.modal-btn-primary').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                btn.style.transform = 'scale(0.95)';
+                closeModal();
                 setTimeout(() => {
-                    btn.style.transform = '';
-                    alert('More information would be displayed here! 📋');
-                }, 150);
+                    alert('Project joined! Welcome to the green community! 🌱');
+                }, 300);
             });
         });
 
@@ -768,6 +1325,100 @@
             const hero = document.querySelector('.hero');
             hero.style.transform = `translateY(${scrolled * 0.5}px)`;
         });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
+                            <div class="stat-number">15</div>
+                            <div class="stat-label">Volunteers</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">85%</div>
+                            <div class="stat-label">Complete</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">200</div>
+                            <div class="stat-label">CO2 Saved</div>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-primary">Join Project</button>
+                        <button class="btn btn-secondary" data-project="solar">Learn More</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="conservation" data-project="coastal">
+                <div class="project-image">
+                    <div class="impact-badge">Medium Impact</div>
+                </div>
+                <div class="project-content">
+                    <span class="project-category">Conservation</span>
+                    <h3 class="project-title">Coastal Cleanup & Marine Protection</h3>
+                    <p class="project-description">Join our monthly beach cleanups and help protect marine ecosystems. Perfect for families and groups looking to make a direct environmental impact.</p>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <div class="stat-number">42</div>
+                            <div class="stat-label">Volunteers</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">60%</div>
+                            <div class="stat-label">Complete</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1.2T</div>
+                            <div class="stat-label">Waste Removed</div>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-primary">Join Project</button>
+                        <button class="btn btn-secondary" data-project="coastal">Learn More</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="urban" data-project="garden">
+                <div class="project-image">
+                    <div class="impact-badge">High Impact</div>
+                </div>
+                <div class="project-content">
+                    <span class="project-category">Urban Green</span>
+                    <h3 class="project-title">Community Garden Network</h3>
+                    <p class="project-description">Transform vacant lots into thriving community gardens. We provide seeds, tools, and expertise - you bring the enthusiasm and green thumbs!</p>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <div class="stat-number">28</div>
+                            <div class="stat-label">Volunteers</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">40%</div>
+                            <div class="stat-label">Complete</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Gardens</div>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-primary">Join Project</button>
+                        <button class="btn btn-secondary" data-project="garden">Learn More</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="education" data-project="schools">
+                <div class="project-image">
+                    <div class="impact-badge">Medium Impact</div>
+                </div>
+                <div class="project-content">
+                    <span class="project-category">Education</span>
+                    <h3 class="project-title">Green Schools Program</h3>
+                    <p class="project-description">Teach children about sustainability through hands-on environmental education. Help develop curriculum and lead workshops in local schools.</p>
+                    <div class="project-stats">
+                        <div class="stat">
