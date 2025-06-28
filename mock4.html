@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoMatch - Find Your Perfect Environmental Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .card-stack {
+            position: relative;
+            height: 500px;
+            margin: 20px;
+        }
+
+        .project-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            cursor: grab;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .project-card:active {
+            cursor: grabbing;
+        }
+
+        .project-card.dragging {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .project-card.liked {
+            transform: translateX(100%) rotate(20deg);
+            opacity: 0;
+        }
+
+        .project-card.ignored {
+            transform: translateX(-100%) rotate(-20deg);
+            opacity: 0;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .project-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            background: #E8F5E8;
+            color: #4CAF50;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .project-location {
+            color: #999;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .info-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            font-size: 1rem;
+            color: #4CAF50;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+
+        .info-button:hover {
+            background: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #999;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section h3 {
+            color: #4CAF50;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-section p, .modal-section ul {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .modal-section ul {
+            padding-left: 20px;
+        }
+
+        .modal-section li {
+            margin-bottom: 5px;
+        }
+
+        .contact-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .contact-info strong {
+            color: #4CAF50;
+        }
+
+        .requirements-list {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .impact-stat {
+            text-align: center;
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .impact-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .impact-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ignore-btn {
+            background: #ff4757;
+            color: white;
+        }
+
+        .ignore-btn:hover {
+            background: #ff3742;
+            transform: scale(1.1);
+        }
+
+        .like-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .like-btn:hover {
+            background: #45a049;
+            transform: scale(1.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .no-more-cards {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .no-more-cards h3 {
+            margin-bottom: 10px;
+        }
+
+        .drag-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .drag-hint.show {
+            opacity: 1;
+        }
+
+        .drag-hint.like {
+            background: rgba(76, 175, 80, 0.9);
+        }
+
+        .drag-hint.ignore {
+            background: rgba(255, 71, 87, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌱 EcoMatch</h1>
+            <p>Discover environmental projects that match your passion</p>
+        </div>
+
+        <div class="card-stack" id="cardStack">
+            <div class="drag-hint" id="dragHint">LIKE</div>
+            <!-- Project cards will be inserted here -->
+        </div>
+
+        <div class="controls">
+            <button class="control-btn ignore-btn" onclick="ignoreProject()">✕</button>
+            <button class="control-btn like-btn" onclick="likeProject()">💚</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="likedCount">0</div>
+                <div class="stat-label">Liked</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="ignoredCount">0</div>
+                <div class="stat-label">Passed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="remainingCount">10</div>
+                <div class="stat-label">Remaining</div>
+            </div>
+        </div>
+
+        <div class="no-more-cards" id="noMoreCards">
+            <h3>🎉 All done!</h3>
+            <p>You've reviewed all available projects. Check back later for more opportunities to make a difference!</p>
+        </div>
+    </div>
+
+    <!-- Modal for detailed project information -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">
+                    <span id="modalIcon">🌱</span>
+                    <span id="modalProjectTitle">Project Title</span>
+                </div>
+                <button class="close-button" onclick="closeModal()">×</button>
+            </div>
+            
+            <div class="modal-section">
+                <h3>📋 Project Overview</h3>
+                <p id="modalFullDescription">Detailed project description will appear here.</p>
+            </div>
+
+            <div class="modal-section">
+                <h3>🎯 Project Objectives</h3>
+                <ul id="modalObjectives">
+                    <li>Objective 1</li>
+                    <li>Objective 2</li>
+                </ul>
+            </div>
+
+            <div class="modal-section">
+                <h3>⏰ Time Commitment</h3>
+                <p id="modalTimeCommitment">Time commitment details</p>
+            </div>
+
+            <div class="modal-section">
+                <h3>📊 Project Impact</h3>
+                <div class="impact-stats" id="modalImpactStats">
+                    <!-- Impact statistics will be inserted here -->
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <div class="requirements-list">
+                    <h3>📝 Requirements</h3>
+                    <ul id="modalRequirements">
+                        <li>Requirement 1</li>
+                        <li>Requirement 2</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <h3>📞 Contact Information</h3>
+                <p id="modalContact"><strong>Email:</strong> contact@project.org</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const projects = [
+            {
+                title: "Ocean Cleanup Initiative",
+                description: "Join our mission to remove plastic waste from the Pacific Ocean using innovative cleanup technologies.",
+                tags: ["Ocean", "Cleanup", "Marine Life"],
+                location: "Pacific Ocean",
+                icon: "🌊",
+                detailedInfo: {
+                    fullDescription: "The Ocean Cleanup Initiative is a revolutionary project dedicated to removing plastic waste from the Pacific Ocean. Using cutting-edge technology including autonomous collection systems and specialized vessels, we're working to clean up the Great Pacific Garbage Patch and prevent further ocean pollution.",
+                    objectives: [
+                        "Remove 90% of floating ocean plastic by 2040",
+                        "Prevent plastic from entering the ocean through river systems",
+                        "Develop scalable cleanup technologies",
+                        "Raise awareness about ocean pollution"
+                    ],
+                    requirements: [
+                        "No prior experience required - full training provided",
+                        "Ability to work on boats (sea sickness resilience helpful)",
+                        "Minimum 2-week commitment",
+                        "Basic swimming skills required"
+                    ],
+                    impact: {
+                        plasticRemoved: "500 tons",
+                        marineLifeProtected: "10,000+",
+                        volunteersNeeded: "150"
+                    },
+                    timeCommitment: "2-8 weeks, flexible scheduling",
+                    contact: "ocean.cleanup@ecomatch.org | +1-555-OCEAN-1"
+                }
+            },
+            {
+                title: "Urban Forest Restoration",
+                description: "Help plant and maintain trees in urban areas to improve air quality and create green spaces for communities.",
+                tags: ["Trees", "Urban", "Air Quality"],
+                location: "Los Angeles, CA",
+                icon: "🌳",
+                detailedInfo: {
+                    fullDescription: "Transform urban landscapes by planting and maintaining trees throughout Los Angeles. This initiative focuses on increasing tree canopy coverage in underserved neighborhoods, improving air quality, and creating cooling effects to combat urban heat islands.",
+                    objectives: [
+                        "Plant 50,000 trees across LA neighborhoods",
+                        "Improve air quality by 15% in target areas",
+                        "Create job training programs for local residents",
+                        "Establish community tree stewardship programs"
+                    ],
+                    requirements: [
+                        "Physical ability to dig and plant trees",
+                        "Weekend availability preferred",
+                        "Interest in community engagement",
+                        "Basic gardening knowledge helpful but not required"
+                    ],
+                    impact: {
+                        treesPlanted: "12,847",
+                        co2Absorbed: "2,400 tons/year",
+                        volunteersNeeded: "200"
+                    },
+                    timeCommitment: "Weekly 4-hour sessions",
+                    contact: "urban.forest@ecomatch.org | +1-555-TREES-1"
+                }
+            },
+            {
+                title: "Solar Panel Installation",
+                description: "Volunteer to help install solar panels on low-income housing to provide clean energy access.",
+                tags: ["Solar", "Energy", "Community"],
+                location: "Phoenix, AZ",
+                icon: "☀️",
+                detailedInfo: {
+                    fullDescription: "Bridge the energy equity gap by installing solar panels on homes in low-income communities. This program provides free solar installations while training volunteers in renewable energy technology and creating pathways to green jobs.",
+                    objectives: [
+                        "Install solar systems on 1,000 low-income homes",
+                        "Reduce energy costs for families by 80%",
+                        "Train 500 volunteers in solar installation",
+                        "Create local green job opportunities"
+                    ],
+                    requirements: [
+                        "Comfort working on rooftops",
+                        "Basic electrical knowledge preferred",
+                        "Ability to lift 50+ pounds",
+                        "Complete safety training program"
+                    ],
+                    impact: {
+                        homesServed: "347",
+                        energySaved: "2.5 MW",
+                        volunteersNeeded: "75"
+                    },
+                    timeCommitment: "Monthly weekend workshops",
+                    contact: "solar.install@ecomatch.org | +1-555-SOLAR-1"
+                }
+            },
+            {
+                title: "Bee Conservation Program",
+                description: "Support local bee populations by maintaining bee gardens and educating communities about pollinator importance.",
+                tags: ["Bees", "Pollination", "Gardens"],
+                location: "Austin, TX",
+                icon: "🐝",
+                detailedInfo: {
+                    fullDescription: "Protect and expand bee populations through habitat creation, hive maintenance, and community education. This program addresses the critical decline in pollinator species while teaching sustainable beekeeping practices.",
+                    objectives: [
+                        "Establish 100 new pollinator gardens",
+                        "Maintain 50 community beehives",
+                        "Educate 5,000 community members",
+                        "Increase local bee population by 25%"
+                    ],
+                    requirements: [
+                        "Willingness to work around bees (protective gear provided)",
+                        "Interest in gardening and ecology",
+                        "Ability to attend monthly training sessions",
+                        "No allergies to bee stings"
+                    ],
+                    impact: {
+                        hivesEstablished: "23",
+                        honeyProduced: "500 lbs",
+                        volunteersNeeded: "40"
+                    },
+                    timeCommitment: "Bi-weekly 3-hour sessions",
+                    contact: "bee.conservation@ecomatch.org | +1-555-BEES-1"
+                }
+            },
+            {
+                title: "River Water Quality Monitoring",
+                description: "Collect and analyze water samples to track pollution levels and advocate for cleaner waterways.",
+                tags: ["Water", "Monitoring", "Research"],
+                location: "Colorado River",
+                icon: "💧",
+                detailedInfo: {
+                    fullDescription: "Become a citizen scientist monitoring water quality along the Colorado River system. Collect samples, analyze data, and contribute to important research that informs policy decisions about water management and pollution control.",
+                    objectives: [
+                        "Monitor 200 river sampling sites monthly",
+                        "Track pollution sources and trends",
+                        "Provide data for policy recommendations",
+                        "Engage communities in water stewardship"
+                    ],
+                    requirements: [
+                        "Attention to detail and data accuracy",
+                        "Ability to hike to remote sampling locations",
+                        "Basic understanding of water chemistry helpful",
+                        "Commitment to consistent sampling schedule"
+                    ],
+                    impact: {
+                        samplesCollected: "3,247",
+                        sitesMonitored: "156",
+                        volunteersNeeded: "60"
+                    },
+                    timeCommitment: "Monthly field trips (2-3 days)",
+                    contact: "water.monitoring@ecomatch.org | +1-555-WATER-1"
+                }
+            },
+            {
+                title: "Sustainable Agriculture Training",
+                description: "Teach farmers sustainable growing practices to reduce environmental impact while maintaining crop yields.",
+                tags: ["Agriculture", "Sustainability", "Education"],
+                location: "Rural Iowa",
+                icon: "🌾",
+                detailedInfo: {
+                    fullDescription: "Work directly with farmers to implement sustainable agriculture practices including cover cropping, reduced tillage, and integrated pest management. Help transition conventional farms to more environmentally friendly methods while maintaining economic viability.",
+                    objectives: [
+                        "Train 500 farmers in sustainable practices",
+                        "Convert 10,000 acres to sustainable methods",
+                        "Reduce agricultural chemical use by 40%",
+                        "Improve soil health across participating farms"
+                    ],
+                    requirements: [
+                        "Agricultural background or strong interest in farming",
+                        "Ability to work in rural environments",
+                        "Teaching or presentation skills helpful",
+                        "Willingness to travel to multiple farm locations"
+                    ],
+                    impact: {
+                        farmersTrained: "127",
+                        acresConverted: "2,300",
+                        volunteersNeeded: "25"
+                    },
+                    timeCommitment: "Seasonal programs (3-4 months)",
+                    contact: "sustainable.ag@ecomatch.org | +1-555-FARM-1"
+                }
+            },
+            {
+                title: "Wildlife Habitat Restoration",
+                description: "Restore natural habitats for endangered species by removing invasive plants and replanting native vegetation.",
+                tags: ["Wildlife", "Habitat", "Conservation"],
+                location: "Yellowstone National Park",
+                icon: "🦌",
+                detailedInfo: {
+                    fullDescription: "Participate in critical habitat restoration work within Yellowstone National Park. Remove invasive species, plant native vegetation, and create wildlife corridors to support endangered species recovery and ecosystem health.",
+                    objectives: [
+                        "Restore 5,000 acres of critical habitat",
+                        "Remove invasive species from sensitive areas",
+                        "Support recovery of endangered species",
+                        "Maintain wildlife migration corridors"
+                    ],
+                    requirements: [
+                        "Physical fitness for hiking and manual labor",
+                        "Camping experience preferred",
+                        "Ability to work in various weather conditions",
+                        "Pass background check for national park work"
+                    ],
+                    impact: {
+                        acresRestored: "1,247",
+                        speciesSupported: "45",
+                        volunteersNeeded: "80"
+                    },
+                    timeCommitment: "1-2 week expeditions",
+                    contact: "habitat.restoration@ecomatch.org | +1-555-WILD-1"
+                }
+            },
+            {
+                title: "Composting Community Program",
+                description: "Establish neighborhood composting systems to reduce food waste and create nutrient-rich soil for gardens.",
+                tags: ["Composting", "Waste Reduction", "Community"],
+                location: "Portland, OR",
+                icon: "♻️",
+                detailedInfo: {
+                    fullDescription: "Build community resilience by establishing neighborhood-scale composting systems. Teach residents how to compost effectively, manage community compost sites, and use finished compost for local food production and landscaping projects.",
+                    objectives: [
+                        "Establish 50 neighborhood composting sites",
+                        "Divert 1,000 tons of food waste annually",
+                        "Produce compost for 200 community gardens",
+                        "Train 2,000 residents in composting techniques"
+                    ],
+                    requirements: [
+                        "Comfort working with organic waste",
+                        "Basic understanding of composting science",
+                        "Good communication skills for community outreach",
+                        "Ability to lift and move compost materials"
+                    ],
+                    impact: {
+                        wastesDiverted: "347 tons",
+                        compostProduced: "156 tons",
+                        volunteersNeeded: "35"
+                    },
+                    timeCommitment: "Weekly 2-hour sessions",
+                    contact: "composting@ecomatch.org | +1-555-COMPOST"
+                }
+            },
+            {
+                title: "Climate Education Initiative",
+                description: "Develop and deliver climate change education programs for schools and community organizations.",
+                tags: ["Education", "Climate", "Outreach"],
+                location: "National Program",
+                icon: "🎓",
+                detailedInfo: {
+                    fullDescription: "Create and deliver engaging climate education programs for diverse audiences. Develop curriculum materials, lead workshops, and build climate literacy in communities across the country through innovative educational approaches.",
+                    objectives: [
+                        "Reach 10,000 students with climate education",
+                        "Train 500 educators in climate science",
+                        "Develop culturally responsive curriculum materials",
+                        "Create climate action plans with communities"
+                    ],
+                    requirements: [
+                        "Teaching or presentation experience",
+                        "Strong understanding of climate science",
+                        "Ability to work with diverse audiences",
+                        "Curriculum development skills preferred"
+                    ],
+                    impact: {
+                        studentsReached: "3,247",
+                        educatorsTrained: "156",
+                        volunteersNeeded: "45"
+                    },
+                    timeCommitment: "Flexible scheduling, minimum 5 hours/month",
+                    contact: "climate.education@ecomatch.org | +1-555-TEACH-1"
+                }
+            },
+            {
+                title: "Green Building Certification",
+                description: "Help buildings achieve LEED certification by implementing energy-efficient and sustainable practices.",
+                tags: ["Green Building", "Energy", "Certification"],
+                location: "Seattle, WA",
+                icon: "🏢",
+                detailedInfo: {
+                    fullDescription: "Support the transition to sustainable building practices by helping property owners achieve LEED certification. Conduct energy audits, recommend improvements, and guide implementation of green building strategies.",
+                    objectives: [
+                        "Certify 100 buildings to LEED standards",
+                        "Reduce building energy consumption by 30%",
+                        "Train building managers in sustainable practices",
+                        "Create green building job opportunities"
+                    ],
+                    requirements: [
+                        "Technical background in construction or engineering",
+                        "LEED certification or willingness to pursue",
+                        "Attention to detail for documentation",
+                        "Ability to work with building professionals"
+                    ],
+                    impact: {
+                        buildingsCertified: "23",
+                        energyReduced: "2.1 MW",
+                        volunteersNeeded: "20"
+                    },
+                    timeCommitment: "Project-based, 2-6 weeks per building",
+                    contact: "green.building@ecomatch.org | +1-555-LEED-1"
+                }
+            }
+        ];
+
+        let currentIndex = 0;
+        let likedCount = 0;
+        let ignoredCount = 0;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let currentY = 0;
+
+        function createProjectCard(project, index) {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.style.zIndex = projects.length - index;
+            
+            card.innerHTML = `
+                <button class="info-button" onclick="showProjectDetails(${index})">ℹ️</button>
+                <div class="card-image">
+                    ${project.icon}
+                </div>
+                <div class="card-content">
+                    <div class="project-title">${project.title}</div>
+                    <div class="project-description">${project.description}</div>
+                    <div class="project-tags">
+                        ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="project-location">📍 ${project.location}</div>
+                </div>
+            `;
+
+            // Add drag functionality
+            card.addEventListener('mousedown', startDrag);
+            card.addEventListener('touchstart', startDrag);
+
+            return card;
+        }
+
+        function startDrag(e) {
+            if (e.target.closest('.project-card') !== getCurrentCard()) return;
+            if (e.target.closest('.info-button')) return; // Don't drag when clicking info button
+            
+            isDragging = true;
+            const card = getCurrentCard();
+            card.classList.add('dragging');
+            
+            const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
+            
+            startX = clientX;
+            startY = clientY;
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+            
+            currentX = clientX - startX;
+            currentY = clientY - startY;
+            
+            const card = getCurrentCard();
+            const rotation = currentX * 0.1;
+            
+            card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotation}deg)`;
+            
+            // Show drag hint
+            const dragHint = document.getElementById('dragHint');
+            if (Math.abs(currentX) > 50) {
+                dragHint.classList.add('show');
+                if (currentX > 0) {
+                    dragHint.textContent = 'LIKE';
+                    dragHint.className = 'drag-hint show like';
+                } else {
+                    dragHint.textContent = 'PASS';
+                    dragHint.className = 'drag-hint show ignore';
+                }
+            } else {
+                dragHint.classList.remove('show');
+            }
+        }
+
+        function endDrag() {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            const card = getCurrentCard();
+            card.classList.remove('dragging');
+            
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('mouseup', endDrag);
+            document.removeEventListener('touchend', endDrag);
+            
+            const dragHint = document.getElementById('dragHint');
+            dragHint.classList.remove('show');
+            
+            // Determine action based on drag distance
+            if (Math.abs(currentX) > 100) {
+                if (currentX > 0) {
+                    likeProject();
+                } else {
+                    ignoreProject();
+                }
+            } else {
+                // Snap back to center
+                card.style.transform = '';
+            }
+            
+            currentX = 0;
+            currentY = 0;
+        }
+
+        function getCurrentCard() {
+            return document.querySelector('.project-card:not(.liked):not(.ignored)');
+        }
+
+        function likeProject() {
+            const card = getCurrentCard();
+            if (!card) return;
+            
+            card.classList.add('liked');
+            likedCount++;
+            updateStats();
+            
+            setTimeout(() => {
+                card.remove();
+                checkIfDone();
+            }, 300);
+        }
+
+        function ignoreProject() {
+            const card = getCurrentCard();
+            if (!card) return;
+            
+            card.classList.add('ignored');
+            ignoredCount++;
+            updateStats();
+            
+            setTimeout(() => {
+                card.remove();
+                checkIfDone();
+            }, 300);
+        }
+
+        function updateStats() {
+            document.getElementById('likedCount').textContent = likedCount;
+            document.getElementById('ignoredCount').textContent = ignoredCount;
+            document.getElementById('remainingCount').textContent = projects.length - likedCount - ignoredCount;
+        }
+
+        function checkIfDone() {
+            if (likedCount + ignoredCount >= projects.length) {
+                document.getElementById('noMoreCards').style.display = 'block';
+            }
+        }
+
+        function showProjectDetails(projectIndex) {
+            const project = projects[projectIndex];
+            const modal = document.getElementById('projectModal');
+            
+            // Populate modal content
+            document.getElementById('modalIcon').textContent = project.icon;
+            document.getElementById('modalProjectTitle').textContent = project.title;
+            document.getElementById('modalFullDescription').textContent = project.detailedInfo.fullDescription;
+            document.getElementById('modalTimeCommitment').textContent = project.detailedInfo.timeCommitment;
+            document.getElementById('modalContact').innerHTML = `<strong>Contact:</strong> ${project.detailedInfo.contact}`;
+            
+            // Populate objectives
+            const objectivesList = document.getElementById('modalObjectives');
+            objectivesList.innerHTML = project.detailedInfo.objectives
+                .map(obj => `<li>${obj}</li>`)
+                .join('');
+            
+            // Populate requirements
+            const requirementsList = document.getElementById('modalRequirements');
+            requirementsList.innerHTML = project.detailedInfo.requirements
+                .map(req => `<li>${req}</li>`)
+                .join('');
+            
+            // Populate impact stats
+            const impactStats = document.getElementById('modalImpactStats');
+            const impact = project.detailedInfo.impact;
+            impactStats.innerHTML = Object.keys(impact)
+                .map(key => {
+                    const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                    return `
+                        <div class="impact-stat">
+                            <div class="impact-number">${impact[key]}</div>
+                            <div class="impact-label">${label}</div>
+                        </div>
+                    `;
+                })
+                .join('');
+            
+            // Show modal
+            modal.style.display = 'block';
+            
+            // Add click outside to close
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('projectModal').style.display = 'none';
+        }
+
+        // Close modal with escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        function initializeCards() {
+            const cardStack = document.getElementById('cardStack');
+            
+            // Create cards in reverse order so the first project is on top
+            for (let i = projects.length - 1; i >= 0; i--) {
+                const card = createProjectCard(projects[i], i);
+                cardStack.appendChild(card);
+            }
+        }
+
+        // Initialize the app
+        initializeCards();
+        updateStats();
+    </script>
+</body>
+</html>
